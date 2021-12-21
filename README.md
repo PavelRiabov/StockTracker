@@ -2,13 +2,13 @@
 
 ### A simple stock tracking app where you can:
 - monitor the prices of 5 stocks (limit of a free API key provided by Alpha Vantage)
-- add stocks to favorite list (I used UserDefaults to save data)
+- add stocks to favorite list (UserDefaults)
 - view favorite list and remove stocks from favorite list
 - search for ticker 
-- build a chart with open, highest and lowest prices (I used 'Chart' for that)
+- build a chart with open, highest and lowest prices (pod Chart)
 
 ### There are some things to fix:
-- implement Core Data to save data instead of UserDefaults 
+- improve network layer 
 - fix bugs with adding stocks to favorite list 
 
 First screen 

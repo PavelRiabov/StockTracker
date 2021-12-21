@@ -10,12 +10,14 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet var tableView: UITableView!
+    let tickers = ["AAPL","MSFT","AMZN","FB","TSLA"]
+    var stocks = [Stock]()
     
      var filteredStocks = [Stock]()
      let searchController = UISearchController(searchResultsController: nil)
     
      var searchBarIsEmpty: Bool {
-        guard let text = searchController.searchBar.text else{return false}
+        guard let text = searchController.searchBar.text else {return false}
         return text.isEmpty
     }
     
@@ -25,7 +27,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //networkManager.fetchStockData()
+
         fetchStockData()
         
         // Setup the Search Controller
@@ -34,45 +36,9 @@ class ViewController: UIViewController {
         searchController.searchBar.placeholder = "Find ticker"
         navigationItem.searchController = searchController
         definesPresentationContext = true
-    }
-    
+        
 
-    
-    // MARK: - Network
-    let tickers = ["AAPL","MSFT","AMZN","FB","TSLA"]
-    var stocks = [Stock]()
-    func fetchStockData() {
-        for ticker in tickers {
-            let urlString = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=\(ticker)&apikey=\(apiKey)"
-            guard let url = URL(string: urlString) else {return}
-            let session = URLSession(configuration: .default)
-            let task = session.dataTask(with: url) { (data, response, error) in
-                if let data = data {
-                    let _ = self.parseJSON(withData: data)
-                }
-            }
-            task.resume()
-        }
-    }
-    
-    func parseJSON (withData data: Data) -> Stock? {
-        let decoder = JSONDecoder()
-        do {
-            let stockData = try decoder.decode(StockData.self, from: data)
-            guard let stocks = Stock(stockData: stockData) else {
-                return nil
-            }
-            DispatchQueue.main.async {
-                self.stocks.append(stocks)
-                self.tableView.reloadData()
-            }
-            return stocks
-            
-        } catch let error as NSError {
-            print(error)
-            
-        }
-        return nil
+        
     }
     
     //MARK: - Navigation
